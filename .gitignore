@@ -1,0 +1,11 @@
+*
+
+!/.github
+!/.github/**
+!/.bashrc
+!/.dockerignore
+!/.gitignore
+!/.psqlrc
+!/bb.edn
+!/Dockerfile
+!/README.md

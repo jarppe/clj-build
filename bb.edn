@@ -1,0 +1,7 @@
+{:tasks {docker:build {:doc  "Build and push docker image"
+                       :task (do (shell "docker build"
+                                        "--platform" "linux/amd64,linux/arm64"
+                                        "--tag" "jarppe/clj-build:latest"
+                                        ".")
+                                 (shell "docker push"
+                                        "jarppe/clj-build:latest"))}}}
