@@ -39,7 +39,6 @@ jobs:
       - name: Build ID and date
         run: |
           echo "build_date=$(date --iso-8601=seconds)" >> "$GITHUB_ENV"
-          echo "build_=date --iso-8601=seconds" >> "$GITHUB_ENV"
 
       - name: Build and push
         uses: docker/build-push-action@v6
