@@ -36,6 +36,11 @@ jobs:
           username: ${{ secrets.DOCKERHUB_USERNAME }}
           password: ${{ secrets.DOCKERHUB_TOKEN }}
 
+      - name: Build ID and date
+        run: |
+          echo "build_date=$(date --iso-8601=seconds)" >> "$GITHUB_ENV"
+          echo "build_=date --iso-8601=seconds" >> "$GITHUB_ENV"
+
       - name: Build and push
         uses: docker/build-push-action@v6
         with:
@@ -43,8 +48,9 @@ jobs:
           push: true
           cache-from: type=registry,ref=${GHR_TAG}:latest
           cache-to: type=inline
+          labels: |
+            build_date=${{ env.build_date }}
+            build_id=${{ env.GITHUB_RUN_ID }}
           tags: |
-            ${GHR_TAG}:latest
-            ${GHR_TAG}:${GITHUB_RUN_ID}
-            ${HUB_TAG}:latest
-            ${HUB_TAG}:${GITHUB_RUN_ID}
+            ghcr.io/jarppe/clj-build:latest
+            jarppe/clj-build:latest
