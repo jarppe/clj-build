@@ -1,2 +1,11 @@
 {:tasks {docker:build {:doc  "Build and push docker image"
-                       :task (shell "docker build --tag jarppe/clj-build:dev .")}}}
+                       :task (let [image "jarppe/clj-build:dev"]
+                               (shell "docker build --tag" image ".")
+                               ;; Test that installed tools work:
+                               (doseq [tool ["java" "clojure" "bb" "bun"]]
+                                 (println (str "\n" tool ":"))
+                                 (shell "docker run --rm" image tool "--version"))
+                               (print (str "\nBuilt: " image " size: "))
+                               (flush)
+                               (shell "docker image ls " image "--format" "{{.Size}}")
+                               (println))}}}
