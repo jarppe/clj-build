@@ -1,9 +1,7 @@
 FROM debian:13-slim
 
-
-WORKDIR /workspace
+ARG TARGETARCH
 ENV LANG=C.UTF-8
-
 
 #
 # Base deps:
@@ -16,12 +14,21 @@ RUN \
     gnupg                                                                          \
     ca-certificates                                                                \
     apt-transport-https                                                            \
-    lsb-release-minimal                                                            \
+    lsb-release                                                                    \
     git                                                                            \
     curl                                                                           \
     unzip                                                                          \
     jq
 
+#
+# tini:
+#
+
+RUN \
+  TINI_VERSION=$(curl -sSLf "https://api.github.com/repos/krallin/tini/releases/latest" | jq -r ".tag_name")   && \
+  curl -sSLf "https://github.com/krallin/tini/releases/download/${TINI_VERSION}/tini-${TARGETARCH}"            \
+    > /bin/tini                                                                                                && \
+  chmod +x /bin/tini
 
 #
 # Java:
@@ -42,7 +49,6 @@ RUN \
     temurin-${JAVA_VERSION}-jdk                                                    && \
   java --version
 
-
 #
 # Clojure:
 #
@@ -60,10 +66,10 @@ RUN \
 
 RUN \
   RELEASE=$(curl -sSLf "https://api.github.com/repos/babashka/babashka/releases/latest" | jq -r ".tag_name[1:]") && \
-  case $(uname -m) in                                                              \
-    aarch64) ARCH=aarch64;;                                                        \
-    x86_64)  ARCH=amd64;;                                                          \ 
-    *) echo "Unknown CPU: $(uname -m)"; exit 1;;                                   \
+  case ${TARGETARCH} in                                                              \
+    arm64) ARCH=aarch64;;                                                        \
+    amd64) ARCH=amd64;;                                                          \ 
+    *) echo "Unknown CPU: ${TARGETARCH}"; exit 1;;                                   \
   esac                                                                             && \
   BB_BASE="https://github.com/babashka/babashka/releases/download"                 && \
   BB_TAR="babashka-${RELEASE}-linux-${ARCH}-static.tar.gz"                         && \
@@ -84,7 +90,7 @@ RUN \
 # Workspace:
 #
 
-
-WORKDIR /workspace
 COPY ./.bashrc /root/
+WORKDIR /workspace
+ENTRYPOINT ["/bin/tini", "--"]
 CMD ["/bin/bash"]
