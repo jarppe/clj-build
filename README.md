@@ -1,17 +1,8 @@
 # jarppe/clj-build:latest Docker image for clj/cljs development
 
-Debian 12 slim based image with PostgreSQL client, recent Java, Clojure, Babashka
-and Bun installed.
+Debian 13 slim based image with Java 24, latest Clojure, Babashka, and Bun installed.
 
-## Build
-
-To build and push new image, run:
-
-```bash
-$ docker:build
-```
-
-## Extend
+## Usage
 
 Project dev container image:
 
@@ -73,3 +64,12 @@ ENV JAVA_TOOL_OPTIONS=${JAVA_TOOL_OPTIONS}
 ENTRYPOINT ["/opt/java/bin/java"]
 CMD ["-jar", "./app.jar"]
 ```
+
+## Build locally
+
+To build local image with tag `jarppe/clj-build:dev`:
+
+```bash
+$ bb docker:build
+```
+

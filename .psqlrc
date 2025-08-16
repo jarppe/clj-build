@@ -1,6 +1,0 @@
-\set PROMPT1 '%[%033[1m%]%M:%> %n@%/%[%033[0m%]%R%#%x'
-\set PROMPT2 '[more] %R > '
-\pset null ¤
-\pset linestyle unicode
-\set HISTCONTROL ignoredups
-\timing

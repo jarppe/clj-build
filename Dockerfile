@@ -24,25 +24,6 @@ RUN \
 
 
 #
-# Postgres client:
-#
-
-ARG POSTGRES_VERSION=16
-
-RUN \
-  mkdir -p /usr/share/postgresql                                                   && \
-  curl -sSL https://www.postgresql.org/media/keys/ACCC4CF8.asc                     \
-       -o /usr/share/postgresql/apt.postgresql.org.asc                             && \
-  echo "deb [signed-by=/usr/share/postgresql/apt.postgresql.org.asc]"              \
-       "https://apt.postgresql.org/pub/repos/apt"                                  \
-       "$(lsb_release -cs)-pgdg"                                                   \
-       "main"                                                                      \
-       > /etc/apt/sources.list.d/pgdg.list                                         && \
-  apt update -q                                                                    && \
-  apt install -y                                                                   \
-    postgresql-client-${POSTGRES_VERSION}
-
-#
 # Java:
 #
 
@@ -102,29 +83,10 @@ RUN \
 
 
 #
-# Misc tools:
-#
-
-RUN \
-  apt install -y                                                                   \
-    binutils                                                                       \
-    procps                                                                         \
-    inetutils-ping                                                                 \
-    socat                                                                          \
-    httpie                                                                         \
-    librsvg2-bin                                                                   \
-    rlwrap
-
-
-#
-# User:
+# Workspace:
 #
 
 
 WORKDIR /workspace
-
-COPY ./.bashrc                                                                     \
-     ./.psqlrc                                                                     \
-     /root/
-
+COPY ./.bashrc /root/
 CMD ["/bin/bash"]
