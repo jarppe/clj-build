@@ -1,4 +1,4 @@
-FROM debian:12-slim
+FROM debian:13-slim
 
 
 WORKDIR /workspace
@@ -71,7 +71,6 @@ RUN \
     | tar xzCf /usr/local/bin -                                                    && \
   bb --version
 
-
 #
 # Bun:
 #
@@ -80,7 +79,6 @@ RUN \
   export BUN_INSTALL=/usr/local                                                    && \
   curl -fsSL https://bun.sh/install | bash                                         && \
   bun --version
-
 
 #
 # Workspace:
