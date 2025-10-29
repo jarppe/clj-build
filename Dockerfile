@@ -34,7 +34,7 @@ RUN \
 # Java:
 #
 
-ARG JAVA_VERSION=24
+ARG JAVA_VERSION=25
 
 RUN \
   curl -sSLf https://packages.adoptium.net/artifactory/api/gpg/key/public          \
